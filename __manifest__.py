@@ -1,0 +1,25 @@
+{
+    "name": "Mini Helpdesk",
+    "version": "19.0.1.0.0",
+    "category": "Services/Helpdesk",
+    "summary": "Small ticketing system for learning Odoo",
+    "depends": [
+        "base",
+        "mail",
+        "portal",
+    ],
+    "data": [
+        "security/ir.model.access.csv",
+        "data/helpdesk_stage_data.xml",
+        "data/helpdesk_sequence.xml",
+        "views/menu.xml",
+        "views/helpdesk_team_view.xml",
+        "views/helpdesk_ticket_view.xml",
+        "views/helpdesk_stage_view.xml",
+        "views/helpdesk_tag_view.xml",
+    ],
+    "demo": [],
+    "application": True,
+    "installable": True,
+    "license": "LGPL-3",
+}

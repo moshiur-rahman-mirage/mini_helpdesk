@@ -1,0 +1,6 @@
+<odoo>
+
+     <menuitem id="menu_helpdesk"
+               name="Mini Helpdesk"
+                />
+</odoo>

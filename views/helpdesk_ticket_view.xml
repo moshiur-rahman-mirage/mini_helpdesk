@@ -1,0 +1,119 @@
+<odoo>
+    <record id="view_helpdesk_ticket_list"
+            model="ir.ui.view">
+        <field name="name">helpdesk.ticket.list</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch"
+               type="xml">
+            <list>
+                <field name="name" />
+                <field name="team_id" />
+                <field name="user_id" />
+                <field name="stage_id" />
+                <field name="customer_id" />
+                <field name="priority" />
+            </list>
+        </field>
+    </record>
+    <record id="view_helpdesk_ticket_form"
+            model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch"
+               type="xml">
+            <form>
+                <field name="stage_is_new"
+                       invisible="1" />
+                <field name="stage_is_in_progress"
+                       invisible="1" />
+                <field name="stage_is_resolved"
+                       invisible="1" />
+                <header>
+                    <button name="action_start_progress"
+                            string="Start Progress"
+                            type="object"
+                            class="btn-primary"
+                            invisible="not stage_is_new" />
+                    <button name="action_resolve"
+                            string="Resolve"
+                            type="object"
+                            class="btn-primary"
+                            invisible="not stage_is_in_progress" />
+                    <button name="action_close"
+                            string="Close"
+                            type="object"
+                            class="btn-primary"
+                            invisible="not stage_is_resolved" />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="ticket_no"
+                               readonly="1" />
+                        <field name="name" />
+                        <field name="team_id" />
+                        <field name="team_leader_id"
+                               readonly="1" />
+                        <field name="team_user_ids"
+                               invisible="1" />
+                        <field name="user_id"
+                               domain="[('id', 'in', team_user_ids)]" />
+                        <field name="stage_id" />
+                        <field name="customer_id" />
+                        <field name="priority" />
+                        <field name="description" />
+                        <field name="tag_ids"
+                               widget="many2many_tags" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_helpdesk_ticket_search"
+            model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch"
+               type="xml">
+            <search>
+                <field name="name" />
+                <field name="ticket_no" />
+                <field name="customer_id" />
+                <field name="user_id" />
+                <separator />
+                <filter name="urgent_tickets"
+                        string="Urgent"
+                        domain="[('priority', '=', 'urgent')]" />
+                <filter name="urgent_in_progress"
+                        string="Urgent In Progress"
+                        domain="[
+                    ('priority', '=', 'urgent'),
+                    ('stage_id.name', '=', 'In Progress')
+                ]" />
+                <filter name="resolved"
+                        string="Resolved"
+                        domain = "[
+                        ('stage_id.name','=','Resolved')
+                        ]" />
+                <filter name="urgent_or_high"
+                        string="Urgent or High"
+                        domain="[
+            '|',
+            ('priority', '=', 'urgent'),
+            ('priority', '=', 'high')
+        ]" />
+            </search>
+        </field>
+    </record>
+    <record id="action_helpdesk_ticket"
+            model="ir.actions.act_window">
+        <field name="name">Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id"
+               ref="view_helpdesk_ticket_search" />
+    </record>
+    <menuitem id="menu_helpdesk_ticket"
+              name="Tickets"
+              parent="menu_helpdesk"
+              action="action_helpdesk_ticket" />
+</odoo>

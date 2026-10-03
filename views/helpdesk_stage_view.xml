@@ -1,0 +1,46 @@
+<odoo>
+    <record id="view_helpdesk_stage_list"
+            model="ir.ui.view">
+        <field name="name">helpdesk.stage.list</field>
+        <field name="model">helpdesk.stage</field>
+        <field name="arch"
+               type="xml">
+            <list>
+                <field name="sequence" />
+                <field name="name" />
+                <field name="fold" />
+                <field name="is_closed" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_helpdesk_stage_form" model="ir.ui.view">
+        <field name="name">helpdesk.stage.form</field>
+         <field name="model">helpdesk.stage</field>
+         <field name="arch" type = "xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                        <field name="fold"/>
+                        <field name="is_closed"/>
+                    </group>
+                </sheet>
+            </form>
+         </field>
+    </record>
+
+        <record id="action_helpdesk_stage"
+                model="ir.actions.act_window">
+            <field name="name">Stages</field>
+            <field name="res_model">helpdesk.stage</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    
+            <menuitem id="menu_helpdesk_stage"
+              name="Stages"
+              parent="menu_helpdesk"
+              action="action_helpdesk_stage" />
+
+    </odoo>
