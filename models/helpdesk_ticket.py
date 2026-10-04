@@ -6,7 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 class HelpDeskTicket(models.Model):
     _name = "helpdesk.ticket"
     _description = "Helpdesk Ticket"
-    _inherit = ["mail.activity.mixin"]
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(string="Ticket Name", required=True)
     description = fields.Text(string="Description", required=True)
