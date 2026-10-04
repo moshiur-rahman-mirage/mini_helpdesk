@@ -40,6 +40,7 @@ class HelpDeskTicket(models.Model):
     )
 
     tag_ids = fields.Many2many("helpdesk.tag", string="Tags")
+    sla_id = fields.Many2one("helpdesk.sla", string="SLA")
 
     priority = fields.Selection(
         [("low", "Low"), ("medium", "Medium"), ("high", "High"), ("urgent", "Urgent")],
@@ -131,18 +132,18 @@ class HelpDeskTicket(models.Model):
                 raise UserError(
                     "Resolved or closed tickets cannot be deleted."
                 )
-            return super().unlink()
+        return super().unlink()
 
-    def action_find_urgent_tickets(self):
+    def action_find_urgent_tickets2(self):
         progress_stage=self.env.ref("mini_helpdesk.stage_in_progress")
         tickets = self.env["helpdesk.ticket"].search(
             [("priority", "=", "urgent"), ("stage_id", "=", progress_stage.id)]
         )
 
         return {
-            'type':'ir.actions.act_window',
-            'name':'Urgent Tickets',
-            'res_model':'helpdesk.ticket',
-            'view_mode':'list,form',
-            'domain':[('id','in',tickets.ids)]
+            "type": "ir.actions.act_window",
+            "name": "My Urgent Tickets",
+            "res_model": "helpdesk.ticket",
+            "view_mode": "list,form",
+            "domain": [("id", "in", tickets.ids)],
         }

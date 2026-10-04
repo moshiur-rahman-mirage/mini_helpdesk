@@ -7,4 +7,12 @@
         <field name="padding">5</field>
         <field name="number_increment">1</field>
     </record>
+<record id="seq_helpdesk_sla"
+        model="ir.sequence">
+    <field name="name">Helpdesk SLA</field>
+    <field name="code">helpdesk.sla</field>
+    <field name="prefix">SLA-</field>
+    <field name="padding">5</field>
+    <field name="number_increment">1</field>
+</record>
 </odoo>

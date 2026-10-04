@@ -17,6 +17,7 @@
         "views/helpdesk_ticket_view.xml",
         "views/helpdesk_stage_view.xml",
         "views/helpdesk_tag_view.xml",
+        "views/helpdesk_sla_view.xml",
     ],
     "demo": [],
     "application": True,

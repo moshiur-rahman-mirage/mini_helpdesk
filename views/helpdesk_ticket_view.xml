@@ -15,59 +15,81 @@
             </list>
         </field>
     </record>
-    <record id="view_helpdesk_ticket_form"
-            model="ir.ui.view">
-        <field name="name">helpdesk.ticket.form</field>
-        <field name="model">helpdesk.ticket</field>
-        <field name="arch"
-               type="xml">
-            <form>
-                <field name="stage_is_new"
-                       invisible="1" />
-                <field name="stage_is_in_progress"
-                       invisible="1" />
-                <field name="stage_is_resolved"
-                       invisible="1" />
-                <header>
-                    <button name="action_start_progress"
-                            string="Start Progress"
-                            type="object"
-                            class="btn-primary"
-                            invisible="not stage_is_new" />
-                    <button name="action_resolve"
-                            string="Resolve"
-                            type="object"
-                            class="btn-primary"
-                            invisible="not stage_is_in_progress" />
-                    <button name="action_close"
-                            string="Close"
-                            type="object"
-                            class="btn-primary"
-                            invisible="not stage_is_resolved" />
-                </header>
-                <sheet>
-                    <group>
+
+<record id="view_helpdesk_ticket_form"
+        model="ir.ui.view">
+    <field name="name">helpdesk.ticket.form</field>
+    <field name="model">helpdesk.ticket</field>
+    <field name="arch"
+           type="xml">
+        <form>
+            <!-- Hidden workflow fields -->
+            <field name="stage_is_new"
+                   invisible="1" />
+            <field name="stage_is_in_progress"
+                   invisible="1" />
+            <field name="stage_is_resolved"
+                   invisible="1" />
+            <!-- Actions -->
+            <header>
+                <button name="action_start_progress"
+                        string="Start Progress"
+                        type="object"
+                        class="btn-primary"
+                        invisible="not stage_is_new" />
+                <button name="action_resolve"
+                        string="Resolve"
+                        type="object"
+                        class="btn-primary"
+                        invisible="not stage_is_in_progress" />
+                <button name="action_close"
+                        string="Close"
+                        type="object"
+                        class="btn-primary"
+                        invisible="not stage_is_resolved" />
+            </header>
+            <sheet>
+                <!-- Main Information -->
+                <group col="2">
+                    <!-- Left Column -->
+                    <group string="Ticket Information">
                         <field name="ticket_no"
                                readonly="1" />
                         <field name="name" />
                         <field name="team_id" />
                         <field name="team_leader_id"
                                readonly="1" />
-                        <field name="team_user_ids"
-                               invisible="1" />
                         <field name="user_id"
                                domain="[('id', 'in', team_user_ids)]" />
                         <field name="stage_id" />
+                    </group>
+                    <!-- Right Column -->
+                    <group string="Assignment &amp; SLA">
                         <field name="customer_id" />
                         <field name="priority" />
-                        <field name="description" />
-                        <field name="tag_ids"
-                               widget="many2many_tags" />
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
+                        <field name="sla_id" />
+                        <!-- Technical field used by user_id domain -->
+                        <field name="team_user_ids"
+                               invisible="1" />
+                        </group>
+                        </group>
+                        <!-- Description -->
+                        <group string="Description">
+                            <field name="description"
+                                   nolabel="1"
+                                   placeholder="Describe the issue..." />
+                        </group>
+                        <!-- Tags -->
+                        <group string="Tags">
+                            <field name="tag_ids"
+                           widget="many2many_tags"
+                           nolabel="1" />
+                           </group>
+                           </sheet>
+                           </form>
+                           </field>
+                           </record>
+
     <record id="view_helpdesk_ticket_search"
             model="ir.ui.view">
         <field name="name">helpdesk.ticket.search</field>
@@ -97,10 +119,33 @@
                 <filter name="urgent_or_high"
                         string="Urgent or High"
                         domain="[
-            '|',
-            ('priority', '=', 'urgent'),
-            ('priority', '=', 'high')
-        ]" />
+                    '|',
+                    ('priority', '=', 'urgent'),
+                    ('priority', '=', 'high')
+                ]" />
+                <filter name="active_important"
+                        string="Important Active"
+                        domain="[
+                            '|',
+                            '!',
+                            ('priority', '=', 'urgent'),
+                            ('priority', '=', 'high'),
+                        ('stage_id.name', '=', 'Resolved')
+                        ]" />
+                <group>
+                    <filter name="group_by_priority"
+                            string="Priority"
+                            context="{'group_by': 'priority'}" />
+                    <filter name="group_by_stage"
+                            string="Stage"
+                            context="{'group_by': 'stage_id'}" />
+                    <filter name="group_by_team"
+                            string="Team"
+                            context="{'group_by': 'team_id'}" />
+                    <filter name="group_by_user"
+                            string="User"
+                            context="{'group_by':'user_id'}" />
+                </group>
             </search>
         </field>
     </record>
@@ -112,8 +157,22 @@
         <field name="search_view_id"
                ref="view_helpdesk_ticket_search" />
     </record>
+<record id="action_helpdesk_urgent_tickets"
+        model="ir.actions.act_window">
+    <field name="name">Urgent Tickets</field>
+    <field name="res_model">helpdesk.ticket</field>
+    <field name="view_mode">list,form</field>
+    <field name="context">
+        {'search_default_urgent_tickets': 1}
+    </field>
+</record>
     <menuitem id="menu_helpdesk_ticket"
               name="Tickets"
               parent="menu_helpdesk"
               action="action_helpdesk_ticket" />
+    <menuitem id="menu_helpdesk_urgent_tickets"
+              name="Urgent Tickets"
+              parent="menu_helpdesk"
+              action="action_helpdesk_urgent_tickets"
+              sequence="20" />
 </odoo>
