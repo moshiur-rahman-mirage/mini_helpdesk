@@ -10,6 +10,7 @@
     ],
     "data": [
         "security/ir.model.access.csv",
+        "data/ir_cron.xml",
         "data/helpdesk_stage_data.xml",
         "data/helpdesk_sequence.xml",
         "views/menu.xml",

@@ -12,5 +12,5 @@ class HelpdeskSla(models.Model):
         required=True,
     )
 
-    response_time=fields.Char(string="Response Time",required=True)
-    resolution_time=fields.Char(string="Resolution Time",required=True)
+    response_time = fields.Float(string="Response Time(Hours)", required=True)
+    resolution_time = fields.Float(string="Resolution Time(Hours)", required=True)

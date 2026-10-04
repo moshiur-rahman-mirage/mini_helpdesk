@@ -50,7 +50,7 @@
             </header>
             <sheet>
                 <!-- Main Information -->
-                <group col="2">
+                <group col="3">
                     <!-- Left Column -->
                     <group string="Ticket Information">
                         <field name="ticket_no"
@@ -64,13 +64,26 @@
                         <field name="stage_id" />
                     </group>
                     <!-- Right Column -->
-                    <group string="Assignment &amp; SLA">
+                    <group string="Assignment ">
                         <field name="customer_id" />
                         <field name="priority" />
-                        <field name="sla_id" />
+
                         <!-- Technical field used by user_id domain -->
                         <field name="team_user_ids"
                                invisible="1" />
+                        </group>
+                        <group string="SLA">
+                            <field name="sla_id" />
+                            <field name="response_deadline"
+                                   readonly="1" />
+                            <field name="response_date" />
+                            <field name="resolution_deadline"
+                                   readonly="1" />
+                            <field name="response_sla_status"
+                                   readonly="1" />
+                            <field name="resolution_date" />
+                            <field name="resolution_sla_status"
+                                   readonly="1" />
                         </group>
                         </group>
                         <!-- Description -->
@@ -86,6 +99,9 @@
                            nolabel="1" />
                            </group>
                            </sheet>
+                           <chatter>
+                               <field name="activity_ids" />
+                           </chatter>
                            </form>
                            </field>
                            </record>
